@@ -2,7 +2,7 @@
 
 This script repeatedly pings a machine and logs when it starts and stops responding. It outputs the result of every single ping to the screen, but only logs to the log file when the current response differs from the previous response.  
 
-Useful when running Win10 upgrades overnight, so you can get a rough idea of their progress.  
+Useful when running Win10 upgrades overnight, so you can get a rough idea of their progress, and when they rebooted.  
 
 # Usage
 1. Download `Ping-OverTime.psm1`
@@ -88,4 +88,4 @@ mseng3@ENGRIT-MMS-RDP C:\>
 ```
 
 # Notes
-- By mseng3
+- By mseng3. See my other projects here: https://github.com/mmseng/code-compendium.
