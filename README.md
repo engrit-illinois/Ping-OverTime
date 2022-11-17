@@ -5,7 +5,7 @@ This script repeatedly pings a machine and logs when it starts and stops respond
 Useful when running Win10 upgrades overnight, so you can get a rough idea of their progress, and when they rebooted.  
 
 # Usage
-1. Download `Ping-OverTime.psm1` to `$HOME\Documents\WindowsPowerShell\Modules\Ping-OverTime\Ping-OverTime.psm1`.
+1. Download `Ping-OverTime.psm1` to the appropriate subdirectory of your PowerShell [modules directory](https://github.com/engrit-illinois/how-to-install-a-custom-powershell-module).
 2. Run it: `Ping-OverTime -ComputerName "computername"`
 
 # Parameters
