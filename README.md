@@ -14,6 +14,15 @@ Useful when running Win10 upgrades overnight, so you can get a rough idea of the
 Mandatory string.  
 The computername of the target computer.
 
+### -IpVersion
+Optional string.  
+Can be `"4"`, `"6"`, or `"Default"`.  
+Default is `"Default`".  
+Only supported when run in PowerShell 7.2 or newer.  
+When omitted, or when `"Default"` is specified, pings use whichever IP version would normally be used by a `ping` command by default, when not specifying `-4` or `-6`.  
+When `"4"` is specified, pings use IPv4.  
+When `"6"` is specified, pings use IPv6.  
+
 ### -LogDir
 Optional string.  
 The directory where the log should be written.  

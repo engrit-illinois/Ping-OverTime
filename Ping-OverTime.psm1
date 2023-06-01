@@ -7,6 +7,9 @@ function Ping-OverTime {
 		[Parameter(Mandatory=$true)]
 		[string]$ComputerName,
 		
+		[ValidateScript({($_ -eq "4") -or ($_ -eq "6") -or ($_ -eq "Default")})]
+		[string]$IpVersion = "Default",
+		
 		[string]$LogDir = "c:\engrit\logs",
 		
 		[switch]$LogAll,
@@ -49,29 +52,58 @@ function Ping-OverTime {
 		}
 		$translation
 	}
+	
+	function Validate-Params {
+		$ver = $Host.Version
+		
+		if($IpVersion -eq "Default") {
+			return $true
+		}
+		else {
+			log "-IpVersion parameter was specified, which requires PowerShell 7.2 or newer."
+			log "    Powershell version is `"$($ver.Major).$($ver.Minor)`"."
+			if(
+				($ver.Major -ge 7) -and
+				($ver.Minor -ge 2)
+			) {
+				return $true
+			}
+			else {
+				return $false
+			}
+		}
+	}
 
 	function Do-Stuff {
 		log "Pinging `"$ComputerName`" over time..."
 		log "Logging to `"$LOG`"."
-		log "-LogAll $LogAll, -TestDelay $TestDelay, -PingsPerTest $PingsPerTest, -MaxTests $MaxTests"
-		log " "
-		
-		for($i = 0; $i -ne $MaxTests; $i += 1) {
-			$result = translate (Test-Connection -ComputerName $ComputerName -Count $PingsPerTest -Quiet)
-			$msg = "Test #$i`: $result"
-			if($result -ne $previous) {
-				log $msg
+		log "-IpVersion: `"$IpVersion`", -LogAll: `"$LogAll`", -TestDelay: `"$TestDelay`", -PingsPerTest: `"$PingsPerTest`", -MaxTests: `"$MaxTests`""
+		if(Validate-Params) {
+			log " "
+			for($i = 0; $i -ne $MaxTests; $i += 1) {
+				$params = @{
+					ComputerName = $ComputerName
+					Count = $PingsPerTest
+					Quiet = $true
+				}
+				if($IpVersion -eq "4") { $params.IPv4 = $true }
+				if($IpVersion -eq "6") { $params.IPv6 = $true }
+				$result = translate (Test-Connection @params)
+				$msg = "Test #$i`: $result"
+				if($result -ne $previous) {
+					log $msg
+				}
+				else {
+					log $msg -NoFile
+				}
+				$previous = $result
+				Start-Sleep -Seconds $TestDelay
 			}
-			else {
-				log $msg -NoFile
-			}
-			$previous = $result
-			Start-Sleep -Seconds $TestDelay
+			log " "
 		}
 	}
 
 	Do-Stuff
 
-	log " "
 	log "EOF"
 }
