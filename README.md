@@ -1,6 +1,6 @@
 # Summary
 
-This script repeatedly pings a machine and logs when it starts and stops responding. It outputs the result of every single ping to the screen, but only logs to the log file when the current response differs from the previous response.  
+This script repeatedly pings a machine (similar to `ping computer-name -t`) and logs when it starts and stops responding. It outputs the result of every single ping to the screen, but only logs to the log file when the current response differs from the previous response.  
 
 Useful when running Win10 upgrades overnight, so you can get a rough idea of their progress, and when they rebooted.  
 
